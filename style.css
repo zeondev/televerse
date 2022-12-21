@@ -1,0 +1,342 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  background-color: #13161f;
+  color: #fff;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+[data-slot="root"] {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+a,
+a:visited {
+  color: #fff;
+  text-decoration: none;
+}
+
+.header {
+  /* max-height: 180px;
+  height: 30vmax; */
+  font-size: 1.5rem;
+
+  padding: 24px;
+
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.header p,
+.header h1 {
+  margin: 0;
+}
+
+.cards-wrapper {
+  overflow-x: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #7c859e #13161f;
+  /* margin: 0 2vmax; */
+}
+
+.cards-wrapper::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+  background: transparent;
+}
+
+.cards-wrapper::-webkit-scrollbar-thumb {
+  transition: background 0.2s ease;
+  width: 5px;
+  height: 3px;
+  background: #7c859e00;
+  border-radius: 999px;
+}
+
+.cards-wrapper:hover::-webkit-scrollbar-thumb {
+  width: 5px;
+  height: 3px;
+  background: #7c859e99;
+  border-radius: 999px;
+}
+
+.cards {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  width: max-content;
+  gap: 2rem;
+  height: 16rem;
+  padding: 2rem 2vmax;
+  height: 289px;
+}
+
+.card {
+  background: linear-gradient(
+    136.18deg,
+    rgba(255, 255, 255, 0.05) 43.85%,
+    rgba(217, 217, 217, 0) 106.64%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0px 15px 22px 2px rgba(0, 0, 0, 0.5);
+  border-radius: 14px;
+  height: 100%;
+  width: 400px;
+  max-width: 400px;
+  transition: outline 0.2s ease;
+  outline: 0px solid #fff0;
+}
+
+.card:hover {
+  outline: 1px solid #fff;
+}
+
+.video-card {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  border-color: #45474e;
+  border-radius: 14px;
+  overflow: clip;
+  aspect-ratio: 16 / 9;
+  cursor: pointer;
+}
+
+.video-card .overlay {
+  background: linear-gradient(to bottom, #0000 10%, #000e 100%);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.7;
+  transition: all 0.35s ease-in-out;
+}
+
+.video-card:hover .overlay {
+  opacity: 1;
+}
+
+.video-card .details {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.video-card .author,
+.details .author {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.video-card .author .author-pfp,
+.details .author .author-pfp {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2)
+}
+
+.video-card .thumbnail {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  width: 400px;
+}
+
+.status-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 16px;
+  backdrop-filter: blur(10px) contrast(1.1) saturate(0.9);
+}
+
+#player {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #000;
+  opacity: 0;
+  transform: scale(0.5);
+  pointer-events: none;
+  transition: transform 0.5s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.5s linear;
+}
+
+.video-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+#player.show {
+  display: flex !important;
+  transform: unset;
+  opacity: 1;
+  pointer-events: auto !important;
+}
+
+#player video {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  aspect-ratio: 16 / 9;
+  background-color: #222;
+  /* background-image: url('loading.gif');
+  background-size: 5vmax 5vmax;
+  background-position: center;
+  background-repeat: no-repeat; */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 860px) {
+  /* Mobile layout */
+  .header {
+    min-height: calc(100vh - 32rem);
+  }
+}
+
+section[data-slot="browse"] h1 {
+  font-size: 2rem;
+  padding: 0 2vmax;
+  margin-bottom: 0;
+}
+
+section[data-slot="browse"] {
+  padding-bottom: 5rem;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  opacity: 0;
+  transform: translate(-50%, -20%);
+  z-index: 10;
+  max-height: 100vh;
+  padding: 16px;
+  background: #181b24;
+  border: 1px solid #fff5;
+  border-radius: 14px;
+  box-shadow: 0px 15px 89px 10px rgba(0, 0, 0, 0.25);
+  max-width: min-content;
+}
+
+.modal h1 {
+  font-weight: 550;
+  font-size: 1.5rem;
+}
+
+.modal.show {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  overflow: auto;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #0009;
+  opacity: 0;
+  transition: backdrop-filter 0.5s ease, opacity 0.5s ease;
+  backdrop-filter: blur(0px) contrast(1) saturate(1) brightness(1);
+  z-index: 9;
+}
+.modal-overlay.show {
+  opacity: 1;
+  backdrop-filter: blur(2px) contrast(1.1) saturate(1.1) brightness(1.1);
+}
+
+.muted {
+  color: #3d4660;
+}
+
+.thumbnail-wrapper {
+  width: 640px;
+  height: 360px;
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: clip;
+  border-radius: 16px;
+  border: 1px solid #fff5;
+}
+
+.thumbnail-wrapper .thumbnail {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  width: 100%;
+}
+.thumbnail-wrapper .close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 9;
+  width: 48px;
+  height: 48px;
+  appearance: none;
+  background: #0005;
+  color: #fff;
+  font-size: 24px;
+  border: 1px solid #fff3;
+  border-radius: 10px;
+  padding-left: 7px;
+}
+.thumbnail-wrapper .close:hover {
+  background: #000a;
+}
+
+.modal .description-wrapper {
+  position: relative;
+}
+
+.modal .description-wrapper .description {
+  max-height: 10em;
+  overflow: auto;
+  position: relative;
+  padding-bottom: 2rem;
+}
+
+.modal .description-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(180deg, rgba(24, 27, 36, 0) 72.57%, #181b24 100%);
+  pointer-events: none;
+}
