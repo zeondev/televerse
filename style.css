@@ -18,8 +18,26 @@ body {
 
 a,
 a:visited {
-  color: #fff;
+  color: #94aefc;
   text-decoration: none;
+  position: relative;
+  display: inline;
+}
+
+a::after {
+  content: "";
+  bottom: 0;
+  height: 2px;
+  left: 0;
+  right: 0;
+  width: 0px;
+  background-color: #94aefc;
+  display: block;
+  position: absolute;
+  transition: width 0.2s ease;
+}
+a:hover::after {
+  width: 100%;
 }
 
 .header {
@@ -151,7 +169,7 @@ a:visited {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.2)
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .video-card .thumbnail {
@@ -211,6 +229,24 @@ a:visited {
   background-repeat: no-repeat; */
 }
 
+#player .controls {
+  background: linear-gradient(to bottom, #0000 0%, #00000075 60%, #000);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 20%;
+  z-index: 10;
+  opacity: 0;
+  transform: translateY(25%);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+#player .controls:hover {
+  opacity: 1;
+  transform: translateY(0%);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -219,6 +255,12 @@ a:visited {
   /* Mobile layout */
   .header {
     min-height: calc(100vh - 32rem);
+  }
+
+  /* Modal thumbnail should be small */
+  .thumbnail-wrapper {
+    width: unset !important;
+    max-height: 240px !important;
   }
 }
 
@@ -242,13 +284,15 @@ section[data-slot="browse"] {
   opacity: 0;
   transform: translate(-50%, -20%);
   z-index: 10;
+  height: max-content;
+  width: min-content;
   max-height: 100vh;
   padding: 16px;
   background: #181b24;
   border: 1px solid #fff5;
   border-radius: 14px;
   box-shadow: 0px 15px 89px 10px rgba(0, 0, 0, 0.25);
-  max-width: min-content;
+  max-width: 100vw;
 }
 
 .modal h1 {
@@ -291,6 +335,7 @@ section[data-slot="browse"] {
   overflow: clip;
   border-radius: 16px;
   border: 1px solid #fff5;
+  max-width: calc(100vw - 32px);
 }
 
 .thumbnail-wrapper .thumbnail {
@@ -328,6 +373,7 @@ section[data-slot="browse"] {
   overflow: auto;
   position: relative;
   padding-bottom: 2rem;
+  white-space: pre-wrap;
 }
 
 .modal .description-wrapper::after {
@@ -339,4 +385,74 @@ section[data-slot="browse"] {
   right: 0;
   background: linear-gradient(180deg, rgba(24, 27, 36, 0) 72.57%, #181b24 100%);
   pointer-events: none;
+}
+
+.link-hashtag::before {
+  content: "#";
+  color: #5b6ea9;
+}
+
+.link-generic,
+.link-timestamp {
+  padding-left: 28px;
+  position: relative;
+}
+.link-generic::before {
+  /* SVG Icon */
+  content: "";
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='96' height='96' viewBox='0 0 96 96' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_1909_2810)'%3E%3Cpath d='M25.0898 25.0899C29.9264 20.2533 37.7894 20.2533 42.626 25.0899L53.9397 36.4036L59.3138 31.0296L48 19.7159C40.1936 11.9094 27.5222 11.9094 19.7158 19.7159C11.9093 27.5223 11.9093 40.1937 19.7158 48.0001L31.0295 59.3138L36.4035 53.9398L25.0898 42.6261C20.2532 37.7895 20.2532 29.9265 25.0898 25.0899ZM33.8579 39.5149L56.4853 62.1423L62.1422 56.4854L39.5148 33.858L33.8579 39.5149ZM76.2843 48.0001L64.9706 36.6864L59.5966 42.0604L70.9103 53.3741C75.7469 58.2108 75.7469 66.0738 70.9103 70.9104C66.0737 75.747 58.2107 75.747 53.3741 70.9104L42.0603 59.5967L36.6863 64.9707L48 76.2844C55.8065 84.0909 68.4779 84.0909 76.2843 76.2844C84.0908 68.4779 84.0908 55.8066 76.2843 48.0001Z' fill='%235b6ea9'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_1909_2810'%3E%3Crect width='96' height='96' fill='%235b6ea9'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E");
+  background-size: cover;
+}
+
+.link-timestamp::before {
+  content: "";
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='96' height='96' viewBox='0 0 96 96' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_1910_2820)'%3E%3Cpath d='M47.96 8C25.88 8 8 25.92 8 48C8 70.08 25.88 88 47.96 88C70.08 88 88 70.08 88 48C88 25.92 70.08 8 47.96 8ZM48 80C30.32 80 16 65.68 16 48C16 30.32 30.32 16 48 16C65.68 16 80 30.32 80 48C80 65.68 65.68 80 48 80Z' fill='%235b6ea9'/%3E%3Cpath d='M50 28H44V52L65 64.6L68 59.68L50 49V28Z' fill='%235b6ea9'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_1910_2820'%3E%3Crect width='96' height='96' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E");
+  background-size: cover;
+}
+
+button {
+  background: #2a3042;
+  border-radius: 12px;
+  color: #6e87d1;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 14px;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button:hover {
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+input {
+  background-color: #20242e;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: inherit;
+  padding: 8px 14px;
+  border-radius: 8px;
+}
+
+.video-meta .length {
+  color: #7c859e;
+}
+
+.modal .results {
+  /* Search results */
+  max-width: 816px;
+  gap: 16px;
+  min-width: 50vmin;
 }

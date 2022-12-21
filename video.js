@@ -1,5 +1,23 @@
+function secondsToHMS(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const remainingSeconds = seconds % 3600;
+    const minutes = Math.floor(remainingSeconds / 60);
+    const finalSeconds = remainingSeconds % 60;
+    let timeString = '';
+    if (hours > 0) {
+        timeString += hours.toString();
+        timeString += ':';
+    }
+    timeString += minutes.toString().padStart(2, '0');
+    timeString += ':';
+    timeString += finalSeconds.toString().padStart(2, '0');
+    return timeString;
+}
+function addCommas(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
-play = function (details) {
+var play = function (details) {
     // This should just be overlayed on the main ui to make the whole thing more responsive.
     $('#player').classList.add('show');
     try { $('#player .video-container video').remove() } catch (e) { }
@@ -74,8 +92,8 @@ function getContinueWatching() {
 }
 
 function getVideoThumbnail(videoObj) {
-    var x = videoObj.videoThumbnails.find(f => f.quality === 'high');
-    // console.log(x);
+    // var x = videoObj.videoThumbnails.find(f => f.quality === 'high');
+    var x = videoObj.videoThumbnails.find(f => f.quality === 'sddefault');
     return x;
 }
 
@@ -86,6 +104,7 @@ async function getAuthorThumbnail(videoObj) {
 }
 
 async function videoPreplayCard(details, AuthorThumbnail, videoData) {
+    closeModal();
     var cardModal = modal(/*html*/`
         <div class="thumbnail-wrapper">
             <button class="close" ><div style="display:flex; align-items: center;"><img src="/assets/close.svg" style="width:32px;height:32px;"></div></button>
@@ -93,12 +112,12 @@ async function videoPreplayCard(details, AuthorThumbnail, videoData) {
         </div>
         <div class="details">
             <h1 class="title">Video title</h1>
+            <p class="video-meta"><span class="length"></span> • Published <span class="date">(no)</span> • <span class="views">(no)</span> views</p>
             <div class="author">
                 <img class="author-pfp">
-                <span class="author-name"></span>
+                <span class="author-name"></span> • <span class="author-subs">(no)</span> subscribers
             </div>
             <div class="description-wrapper"><p class="description"><span class="muted">loading description...</span></p></div>
-            <p>More info Todo..</p>
             <button class="begin">Play Video</button>
         </div>
         `);
@@ -106,7 +125,40 @@ async function videoPreplayCard(details, AuthorThumbnail, videoData) {
     cardModal.querySelector(".title").innerText = details.title;
     cardModal.querySelector(".author-name").innerText = details.author;
     cardModal.querySelector(".author-pfp").src = AuthorThumbnail;
-    cardModal.querySelector(".description").innerText = videoData.description;
+    cardModal.querySelector(".author-subs").innerText = videoData.subCountText;
+    cardModal.querySelector(".description").innerHTML = videoData.descriptionHtml;
+    // <p class="video-meta"><span class="length"></span> • Published <span class="date">(no)</span> • <span class="views">(no)</span> views</p>
+    let meta = cardModal.querySelector('.video-meta');
+    meta.querySelector('.length').innerText = secondsToHMS(details.lengthSeconds);
+    meta.querySelector('.date').innerText = details.publishedText;
+    meta.querySelector('.views').innerText = addCommas(details.viewCount);
+
+    // Parse links to match them up correctly
+    var links = cardModal.querySelector(".description").querySelectorAll('a');
+    for (let i = 0; i < links.length; i++) {
+        var link = links[i];
+        var linkGoes = link.href;
+        var htRgx = /\/hashtag\/(.*)/;
+        var htCheck = htRgx.test(linkGoes);
+        if (htCheck === true) {
+            link.classList.add('link-hashtag');
+            link.href = 'javascript:void(0)';
+            link.innerText = htRgx.exec(linkGoes)[1];
+            link.onclick = e => {
+                // TODO, do something with linkGoes
+                alert('#' + e.target.innerText);
+            }
+        } else {
+            // generic link
+
+            if (link.dataset.onclick === 'jump_to_time') {
+                link.classList.add('link-timestamp');
+            } else {
+                link.classList.add('link-generic');
+            }
+        }
+    }
+
 
     cardModal.querySelector('button.close').onclick = () => {
         closeModal();

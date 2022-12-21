@@ -87,3 +87,20 @@ if (!localStorage.getItem("interests")) {
         }
     });
 }
+
+window.addEventListener('load', _ => {
+    // Form input stuff
+    $('.header form').addEventListener('submit', e => {
+        e.preventDefault();
+        let searchQuery = e.target.querySelector('input[name="search"]').value;
+        let x = fetch(baseURL + 'search?q=' + searchQuery + '&region=US').then(r => r.json())
+        .then(arr => {
+            let searchModal = modal('<h1>Search results</h1><div class="results"></div>');
+            // TODO: pagination system or just a way of loading 5 videos at a time when you scroll down
+            arr = arr.slice(0, 10);
+            for (let i = 0; i < arr.length; i++) {
+                createVideoCard(searchModal.querySelector('div'), arr[i]);
+            }
+        });
+    })
+});
