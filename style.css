@@ -61,6 +61,44 @@ a:hover::after {
   margin: 0;
 }
 
+
+
+.results {
+  flex-direction: column;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #7c859e #13161f;
+
+  /* margin: 0 2vmax; */
+}
+
+.results::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+  background: transparent;
+}
+
+.results::-webkit-scrollbar-thumb {
+  transition: background 0.2s ease;
+  width: 5px;
+  height: 3px;
+  background: #7c859e00;
+  border-radius: 999px;
+}
+
+.results:hover::-webkit-scrollbar-thumb {
+  width: 5px;
+  height: 3px;
+  background: #7c859e99;
+  border-radius: 999px;
+}
+
+.results .video-card {
+    /* transform: translateX(6%); */
+  margin-bottom:25px;
+  justify-self: center;
+}
+
 .cards-wrapper {
   overflow-x: scroll;
   scrollbar-width: thin;
@@ -129,6 +167,7 @@ a:hover::after {
   overflow: clip;
   aspect-ratio: 16 / 9;
   cursor: pointer;
+  height: fit-content;
 }
 
 .video-card .overlay {
@@ -262,6 +301,10 @@ a:hover::after {
   .thumbnail-wrapper {
     width: unset !important;
     max-height: 240px !important;
+  }
+
+  #search {
+    width: calc(100vw - 15%);
   }
 }
 
@@ -463,11 +506,116 @@ input {
 
 /* Landing Page */
 
-.nav {
+.nav-container {
+  background-color: #0b0d13;
+  display: inline-flex;
+  width: 100%;
+  height: 54px;
+  margin-bottom: 0px;
+}
+
+@media (max-width: 475px) {
+  .nav-container .nav ul li {
+    display: none;
+  }
+}
+
+.nav-container .nav {
+  width: 100%;
+
+  display: flex;
+  margin-right: 15px;
+  justify-content: flex-end;
+}
+
+.nav-container img {
+  margin-left: 10px;
+  display: flex;
+  justify-content: flex-start;
+  width: 240px;
+  height: 54px;
+}
+
+.nav-container .nav ul {
   display: flex;
   flex-direction: row-reverse;
   text-decoration: none;
   list-style-type: none;
   gap: 15px;
-  margin-right: 15px;
+  justify-content: flex-end;
+
+}
+
+.nav-container .nav ul li a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.nav-container .nav .show {
+  display: none;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.content .banner {
+  display: flex;
+  margin: 0px;
+  width: 100%;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  height: 25vh;
+  background-color: #171c2b;
+  flex-direction: column;
+}
+
+.content .banner * {
+  display: flex;
+  margin:0px;
+  padding: 0px;
+}
+.content .aboutus div {
+  display: flex;
+  justify-content: center;
+  /* flex-direction: row; */
+  text-align: center;
+}
+
+.content .aboutus {
+  text-align: center;
+
+}
+
+.content .aboutus .card-container {
+  width: 100vw;
+  display: flex;
+  gap: 15px;
+  padding: 0px 15px 0px 15px;
+
+}
+/* @media (max-width: 1258px) { */
+  @media (max-width: 1110px) {
+  .content .aboutus .card-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.content .aboutus .card-container .card {
+  display: flex;
+  width: inherit;
+  flex-direction: column;
+  margin: 10px;
+}
+.content .aboutus .card-container .card * {
+  margin: 2px 12px 2px 12px;
+  padding: 2px;
+}
+
+.footer {
+  padding-top: 30px;
+  text-align: center;
 }

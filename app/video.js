@@ -17,7 +17,10 @@ function addCommas(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-var play = function (details) {
+var play = function (details, timeinsec) {
+    if (!timeinsec) {
+        timeinsec = 0
+    }
     // This should just be overlayed on the main ui to make the whole thing more responsive.
     $('#player').classList.add('show');
     try { $('#player .video-container video').remove() } catch (e) { }
@@ -39,9 +42,10 @@ var play = function (details) {
     }
     localStorage.setItem("continueWatched", JSON.stringify(continueWatching))
     let v = document.createElement('video');
-    v.src = baseURLNoApi + 'latest_version?id=' + details.videoId + '&itag=22&local=true';
+    v.src = baseURLNoApi + 'latest_version?id=' + details.videoId + '&itag=22&local=true#t=' + timeinsec;
     $('#player .video-container').appendChild(v);
     v.controls = true;
+    v.autoplay = true;
 
     v.addEventListener('ended', (e) => {
         // VIDEO IS FINISHED WATCHING

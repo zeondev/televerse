@@ -1,3 +1,18 @@
+function getParams() {
+
+  var params = {},
+      pairs = document.URL.split('?')
+             .pop()
+             .split('&');
+
+  for (var i = 0, p; i < pairs.length; i++) {
+         p = pairs[i].split('=');
+         params[ p[0] ] =  p[1];
+  }     
+
+  return params;
+}
+
 function flatten(a) {
   return Array.isArray(a) ? [].concat.apply([], a.map(flatten)) : a;
 }
@@ -31,8 +46,6 @@ let baseURLNoApi;
 let servers = [
   "https://vid.puffyan.us/", // United States
   "https://invidious.weblibre.org/", // Chile
-  "https://invidio.xamh.de/", // Germany
-  "https://y.com.sb/", // Germany
   "https://invidious.flokinet.to/", // Romania
 ];
 
@@ -41,11 +54,11 @@ if (continent === "America") {
 } else if (continent === "Australia") {
   baseURLNoApi = servers[1];
 } else if (continent === "Europe") {
-  baseURLNoApi = servers[3];
+  baseURLNoApi = servers[2];
 } else if (continent === "Asia") {
-  baseURLNoApi = servers[4];
+  baseURLNoApi = servers[2];
 } else if (continent === "Africa") {
-  baseURLNoApi = servers[4];
+  baseURLNoApi = servers[2];
 } else {
     baseURLNoApi = servers[0]
 }
@@ -70,12 +83,34 @@ clearCardList = function (element) {
 };
 
 function callInterests() {
-  if (confirm("Hello please confirm your interests yes or no!!!!!!!!!")) {
-    localStorage.setItem(
-      "interests",
-      '["coding","news","hardware","cars","design"]'
-    );
-    location.reload();
+  // if (confirm("Hello please confirm your interests yes or no!!!!!!!!!")) {
+  //   localStorage.setItem(
+  //     "interests",
+  //     '["coding","news","hardware","cars","design"]'
+  //   );
+  //   location.reload();
+
+  // }
+  var interestChooser = modal(/*html*/`
+      <div style="text-align:center; width:100%">
+        <h1>Welcome to Televerse!</h1>
+        <p>Please pick a few interests that you have so you can get better recommendations.</p>
+        <div style="display:flex; flex-direction:column;">
+          <input style="margin-bottom:10px;" type="text" placeholder="Interest..." id="interest1"/>
+          <input style="margin-bottom:10px;" type="text" placeholder="Interest..." id="interest2"/>
+          <input style="margin-bottom:10px;" type="text" placeholder="Interest..." id="interest3"/>
+          <input style="margin-bottom:10px;" type="text" placeholder="Interest..." id="interest4"/>
+          <button class="begin">Go!</button>
+        </div>
+      </div>
+  `)
+  let i1 = $("#interest1")
+  let i2 = $("#interest2")
+  let i3 = $("#interest3")
+  let i4 = $("#interest4")
+  interestChooser.querySelector(".begin").onclick = () => {
+    localStorage.setItem("interests", `["${i1.value}", "${i2.value}", "${i3.value}", "${i4.value}"]`)
+    location.reload()
   }
 }
 
@@ -87,8 +122,9 @@ if (localStorage.getItem("continueWatched") == null) {
   getContinueWatching();
 }
 
-if (!localStorage.getItem("interests")) {
+if (!localStorage.getItem("interests") == true) {
   callInterests();
+  console.log("hi")
 } else {
   let interestsObj = localStorage.getItem("interests");
 
@@ -97,9 +133,22 @@ if (!localStorage.getItem("interests")) {
     // Attempt to read it as JSON string or array
     interestsArray = JSON.parse(interestsObj);
   } catch (e) {
-    alert(
-      "sorry i could not get your interests are you sure you are have spellted it right"
-    );
+    closeModal();
+    var interestError = modal(/*html*/`
+      <div style="text-align:center; width:25vw">
+        <h1>Uh oh!</h1>
+        <p>Your interests failed to load</p>
+        <span><button class="refreshinterests" style="margin-right:5px;">Reload</button><button class="clearinterests" style="margin-left:5px;">Clear Interests</button></span>
+      </div>
+    `)
+    interestError.querySelector(".refreshinterests").onclick = () => {
+      location.reload()
+    }
+    interestError.querySelector(".clearinterests").onclick = () => {
+      localStorage.removeItem("interests")
+      location.reload()
+
+    }
   }
 
   let reqs = [];
@@ -137,6 +186,9 @@ window.addEventListener("load", (_) => {
         let searchModal = modal(
           '<h1>Search results</h1><div class="results"></div>'
         );
+
+        searchModal.style.height = "85vh"
+        searchModal.style.overflowX = "hidden"
         // TODO: pagination system or just a way of loading 5 videos at a time when you scroll down
         arr = arr.slice(0, 10);
         for (let i = 0; i < arr.length; i++) {
