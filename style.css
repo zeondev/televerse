@@ -189,6 +189,7 @@ a:hover::after {
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   padding: 16px;
   backdrop-filter: blur(10px) contrast(1.1) saturate(0.9);
+  -webkit-backdrop-filter: blur(10px) contrast(1.1) saturate(0.9);
 }
 
 #player {
@@ -229,7 +230,7 @@ a:hover::after {
   background-repeat: no-repeat; */
 }
 
-#player .controls {
+/* #player .controls {
   background: linear-gradient(to bottom, #0000 0%, #00000075 60%, #000);
   position: fixed;
   bottom: 0;
@@ -245,7 +246,7 @@ a:hover::after {
 #player .controls:hover {
   opacity: 1;
   transform: translateY(0%);
-}
+} */
 
 * {
   box-sizing: border-box;
@@ -316,11 +317,13 @@ section[data-slot="browse"] {
   opacity: 0;
   transition: backdrop-filter 0.5s ease, opacity 0.5s ease;
   backdrop-filter: blur(0px) contrast(1) saturate(1) brightness(1);
+  -webkit-backdrop-filter: blur(0px) contrast(1) saturate(1) brightness(1);
   z-index: 9;
 }
 .modal-overlay.show {
   opacity: 1;
   backdrop-filter: blur(2px) contrast(1.1) saturate(1.1) brightness(1.1);
+  -webkit-backdrop-filter: blur(2px) contrast(1.1) saturate(1.1) brightness(1.1);
 }
 
 .muted {
@@ -455,4 +458,16 @@ input {
   max-width: 816px;
   gap: 16px;
   min-width: 50vmin;
+}
+
+
+/* Landing Page */
+
+.nav {
+  display: flex;
+  flex-direction: row-reverse;
+  text-decoration: none;
+  list-style-type: none;
+  gap: 15px;
+  margin-right: 15px;
 }

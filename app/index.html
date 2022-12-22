@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Televerse-UI</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <section data-slot="root">
+        <!-- The container for the UI layout -->
+
+        <div class="header">
+            <h1>Welcome to Televerse.</h1>
+            <p>The best TV interface for streaming youtube content.</p>
+            <form action="#">
+                <input type="text" name="search" id="search" placeholder="Search for videos...">
+            </form>
+        </div>
+        <section data-slot="browse">
+            <h1>Recommendations</h1>
+            <div class="cards-wrapper">
+                <div class="cards recommended-cards">
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                </div>
+            </div>
+            <h1>Continue watching</h1>
+            <div class="cards-wrapper">
+                <div class="cards continue-cards">
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                </div>
+            </div>
+            <h1>Watch later</h1>
+            <div class="cards-wrapper">
+                <div class="cards continue-cards">
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                    <div class="card"></div>
+                </div>
+            </div>
+        </section>
+        <div class="status-bar">
+            Status bar information at the bottom
+        </div>
+
+        <div id="player">
+            <div class="video-container"></div>
+            <div class="controls"></div>
+        </div>
+
+        <!-- <section data-slot="nav">
+            <div class="logo"><img src="/assets/logo.svg"></div>
+            <div class="items">
+                <a class="item" href="/">
+                    Home
+                </a>
+                <a class="item" href="/">
+                    Recents
+                </a>
+                <a class="item" href="/">
+                    My Profile
+                </a>
+                <a class="item" href="/">
+                    What's Televerse?
+                </a>
+            </div>
+        </section> -->
+    </section>
+    <script src="/app/modal.js" defer></script>
+    <script src="/app/video.js" defer></script>
+    <script src="/app/index.js" defer></script>
+</body>
+
+</html>
